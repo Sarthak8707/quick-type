@@ -22,3 +22,4 @@ export const posts = pgTable("posts", {
     .references(() => users.id),
   createdAt: timestamp("created_at").defaultNow(),
 });
+

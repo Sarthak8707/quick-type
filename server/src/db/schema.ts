@@ -33,16 +33,13 @@ export const words = pgTable("words", {
 
 export const sessions = pgTable("sessions", {
   id: serial("id").primaryKey(),
-  difficulty: difficultyEnum("difficulty").notNull(),
   wordsID: integer("words_id").notNull().references(() => words.id, {
     onDelete: "cascade", onUpdate: "cascade"
   }),
   wpm: integer("wpm").notNull(),
-  totalWords: integer("total_words").notNull(),
   accuracy: integer("accuracy").notNull(),
   userID: integer("user_id").notNull().references(() => users.id, {
     onDelete: "cascade", onUpdate: "cascade"
   })
-
 })
 

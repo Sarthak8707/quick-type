@@ -4,7 +4,15 @@ import {
   text,
   timestamp,
   integer,
+  pgEnum,
 } from "drizzle-orm/pg-core";
+
+const difficultyEnum = pgEnum("difficulty", ["easy", "medium", "hard"]);
+
+
+// schema for database
+
+// users schema
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -13,13 +21,28 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const posts = pgTable("posts", {
+// words schema
+
+export const words = pgTable("words", {
   id: serial("id").primaryKey(),
-  title: text("title").notNull(),
-  content: text("content"),
-  userId: integer("user_id")
-    .notNull()
-    .references(() => users.id),
-  createdAt: timestamp("created_at").defaultNow(),
-});
+  words: text("words").notNull(),
+  difficulty: difficultyEnum("difficulty").notNull()
+})
+
+// session schema
+
+export const sessions = pgTable("sessions", {
+  id: serial("id").primaryKey(),
+  difficulty: difficultyEnum("difficulty").notNull(),
+  wordsID: integer("words_id").notNull().references(() => words.id, {
+    onDelete: "cascade", onUpdate: "cascade"
+  }),
+  wpm: integer("wpm").notNull(),
+  totalWords: integer("total_words").notNull(),
+  accuracy: integer("accuracy").notNull(),
+  userID: integer("user_id").notNull().references(() => users.id, {
+    onDelete: "cascade", onUpdate: "cascade"
+  })
+
+})
 

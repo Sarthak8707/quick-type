@@ -1,3 +1,4 @@
+import { InferInsertModel } from "drizzle-orm";
 import {
   pgTable,
   serial,
@@ -43,3 +44,5 @@ export const sessions = pgTable("sessions", {
   })
 })
 
+
+export type Session = InferInsertModel<typeof sessions>;

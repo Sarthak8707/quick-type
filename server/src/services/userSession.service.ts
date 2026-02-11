@@ -14,7 +14,7 @@ export const createUserSessionService = async (sessionData: CreateUserSessionInp
 
 export const getUserSessionService = async ({userID}: GetUserSessionInput) => {
 
-    const posts = await db.select().from(sessions).where(eq(sessions.userID, userID));
-    return posts;
-    
+    const userSessions = await db.select().from(sessions).where(eq(sessions.userID, userID));
+    return userSessions;
+
 }

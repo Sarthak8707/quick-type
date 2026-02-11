@@ -17,8 +17,8 @@ const difficultyEnum = pgEnum("difficulty", ["easy", "medium", "hard"]);
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
+  username: text("username").notNull(),
+  password: text("password").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -46,3 +46,5 @@ export const sessions = pgTable("sessions", {
 
 
 export type Session = InferInsertModel<typeof sessions>;
+export type Words = InferInsertModel<typeof words>;
+export type Users = InferInsertModel<typeof users>;

@@ -27,7 +27,7 @@ const Auth = () => {
 
 export default Auth
 
-const Login = ({ showRegisterPage}: obj) => {
+const Login = ({ showRegisterPage }: obj) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   // const [showRegister, setShowRegister] = useState(false);

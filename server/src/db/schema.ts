@@ -8,7 +8,7 @@ import {
   pgEnum,
 } from "drizzle-orm/pg-core";
 
-const difficultyEnum = pgEnum("difficulty", ["easy", "medium", "hard"]);
+export const difficultyEnum = pgEnum("difficulty", ["easy", "medium", "hard"]);
 
 
 // schema for database

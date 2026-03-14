@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       
       { path: "auth", element: <Auth />},
       { path: "user/:id", element: <Users />},
-      { path: "practice", element: <Practice />}
+      { path: "practice/:difficulty", element: <Practice />}
     ],
   },
 ]);

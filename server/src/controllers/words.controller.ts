@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction } from "express"
 import { wordsService } from "../services/words.service";
 
-export const wordsController = async (req: Request, res: Response, next: NextFunction) => {
+type Difficulty = "easy" | "medium" | "hard";
+
+export const wordsController = async (req: Request<{difficulty: Difficulty}> , res: Response, next: NextFunction) => {
     try{
-        const difficulty = req.body.difficulty;
+        const difficulty = req.params.difficulty;
         const result = await wordsService({difficulty});
         return res.status(200).json(result);
     }

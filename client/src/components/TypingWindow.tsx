@@ -1,7 +1,11 @@
 import { useRef, useState } from 'react'
 //import './App.css'
 
-const  TypingWindow = () => {
+type typingWindowProps = {
+  ghostText: string
+}
+
+const  TypingWindow = ({ghostText}: typingWindowProps) => {
   
   const [text, setText] = useState("");
   const started = useRef(false);
@@ -11,7 +15,7 @@ const  TypingWindow = () => {
   const [_, setDone] = useState(false);
   const textRef = useRef("");
   const [timeLeft, setTimeLeft] = useState(60);
-  const ghostText = `Type here to start writing. This text will fade as you type and since you are trying to improve your speed there is a lot you can do`;
+ // const ghostText = `Type here to start writing. This text will fade as you type and since you are trying to improve your speed there is a lot you can do`;
 
   const startTimer = () => {
     if(started.current) return;

@@ -10,10 +10,10 @@ export const loginController = async (req: Request, res: Response, next: NextFun
        const token = result.token;
        const user = result.user;
 
-       return res.status(200).json({token, user});
+       return res.status(200).json({"token": token, "user": user});
     }
     catch(err){
-        console.log(err);
+        next(err);
     }
 }
 
@@ -24,6 +24,6 @@ export const registerController = async (req: Request, res: Response, next: Next
         return res.status(201).json({msg: "Successfully Created"});
     }
     catch(err){
-        console.log(err);
+        next(err);
     }
 }

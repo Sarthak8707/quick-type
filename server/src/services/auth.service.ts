@@ -29,10 +29,10 @@ export const loginService = async ({username, password}: GetUserInput) => {
 export const registerService = async ({username, password}: GetUserInput) => {
     const user = await db.select().from(users).where(eq(users.username, username));
     if(user.length){
-        console.log(" USer::::", user.length);
+       
         throw new AppError("User already exists", 409);
     }
     const hashedPassword = await hashPassword(password);
-    await db.insert(users).values({username, password});
+    await db.insert(users).values({username, password: hashedPassword});
     return {username};
 }

@@ -5,6 +5,7 @@ import { userSessionRouter } from './routes/userSession.route';
 import { wordsRouter } from './routes/words.route';
 import { db } from './db/client';
 import { sessions, words } from './db/schema';
+import { globalErrorHandler } from './middlewares/error.middleware';
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.use("/words", wordsRouter);
 // db.insert(words).values({words: "tell now", difficulty: "easy"}).then(() => {
 //     console.log("Db insertion done successfully");
 // })
+
+app.use(globalErrorHandler);
 
 app.listen(3000, () => {
     console.log("Server Started")

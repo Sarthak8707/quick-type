@@ -15,7 +15,7 @@ app.use("/auth", authRouter);
 app.use("/sessions", userSessionRouter);
 app.use("/words", wordsRouter);
 
-// db.insert(words).values({words: "these are the words", difficulty: "easy"}).then(() => {
+// db.insert(words).values({words: "tell now", difficulty: "easy"}).then(() => {
 //     console.log("Db insertion done successfully");
 // })
 

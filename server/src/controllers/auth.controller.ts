@@ -21,7 +21,7 @@ export const registerController = async (req: Request, res: Response, next: Next
     try{
         const {username, password} = req.body;
         const result = await registerService({username, password});
-        return res.status(201).json(result);
+        return res.status(201).json({msg: "Successfully Created"});
     }
     catch(err){
         console.log(err);

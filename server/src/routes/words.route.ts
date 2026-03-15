@@ -3,7 +3,7 @@ import { wordsController } from "../controllers/words.controller";
 
 const router = Router();
 
-router.get("/:difficulty", () => {}, wordsController);
+router.get("/:difficulty", wordsController);
 
 
 export {router as wordsRouter}

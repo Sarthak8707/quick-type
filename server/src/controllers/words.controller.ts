@@ -10,6 +10,6 @@ export const wordsController = async (req: Request<{difficulty: Difficulty}> , r
         return res.status(200).json(result);
     }
     catch(err){
-        console.log(err);
+        next(err);
     }
 }

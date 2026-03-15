@@ -8,7 +8,7 @@ export const getUserSessionsController = async (req: Request, res: Response, nex
         return res.status(200).json(data);
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 }
 

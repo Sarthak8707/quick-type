@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { createUserSessionController, getUserSessionsController } from "../controllers/userSession.controller";
+import { authMiddleware } from "../middlewares/auth.middleware";
 
 const router = Router();
 
 router.get("/users/:id", getUserSessionsController);
 
-router.post("/users/:id", createUserSessionController);
+router.post("/users/:id", authMiddleware, createUserSessionController);
 
 export { router as userSessionRouter}

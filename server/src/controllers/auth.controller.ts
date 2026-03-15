@@ -4,9 +4,9 @@ import { loginService, registerService } from "../services/auth.service";
 export const loginController = async (req: Request, res: Response, next: NextFunction) => {
     
     try{
-        const {username, password} = req.body;
+       const {username, password} = req.body;
         
-        const result = await loginService({username, password});
+       const result = await loginService({username, password});
        const token = result.token;
        const user = result.user;
 

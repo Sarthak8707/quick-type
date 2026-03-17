@@ -1,110 +1,154 @@
 import { useRef, useState } from 'react'
-//import './App.css'
+import axios from "axios";
 
-type typingWindowProps = {
+
+type TypingWindowProps = {
   ghostText: string
 }
 
-const  TypingWindow = ({ghostText}: typingWindowProps) => {
-  
-  const [text, setText] = useState("");
-  const started = useRef(false);
-  const finished = useRef(false);
-  const toShow = useRef(false);
-  const wpm = useRef<number>(0);
-  const [_, setDone] = useState(false);
-  const textRef = useRef("");
-  const [timeLeft, setTimeLeft] = useState(60);
- // const ghostText = `Type here to start writing. This text will fade as you type and since you are trying to improve your speed there is a lot you can do`;
+const TypingWindow = ({ ghostText }: TypingWindowProps) => {
+  const [text, setText] = useState("")
+  const started = useRef(false)
+  const finished = useRef(false)
+  const toShow = useRef(false)
+  const wpm = useRef<number>(0)
+  const [, setDone] = useState(false)
+  const textRef = useRef("")
+  const [timeLeft, setTimeLeft] = useState(60)
+
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null)
+  const ghostRef = useRef<HTMLTextAreaElement | null>(null)
 
   const startTimer = () => {
-    if(started.current) return;
-    started.current = true;
+    if (started.current) return
+    started.current = true
 
-   const tickingRefcurrent = setInterval(() => {
-      setTimeLeft(prev => prev-1);
-    }, 1000);
+    const ticking = setInterval(() => {
+      setTimeLeft(prev => prev - 1)
+    }, 1000)
 
     setTimeout(() => {
-      finished.current = true;
-      toShow.current = true;
-      const countWords = (text: string) => {
-        return text.trim().split(/\s+/).length;
-      };
-      wpm.current = countWords(textRef.current);
-      clearInterval(tickingRefcurrent);
-      setDone(true);
+      finished.current = true
+      toShow.current = true
 
+      const countWords = (t: string) =>
+        t.trim().length === 0 ? 0 : t.trim().split(/\s+/).length
+
+      wpm.current = countWords(textRef.current)
+
+      clearInterval(ticking)
+      setDone(true)
     }, 60000)
   }
 
-  const handleOnChange = (e: any) => {
-    if(finished.current) return;
-    startTimer();
-    setText(e.target.value);
-    textRef.current =  e.target.value;
+  const handleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (finished.current) return
+    startTimer()
+    setText(e.target.value)
+    textRef.current = e.target.value
+  }
 
+  const handleScroll = () => {
+    if (ghostRef.current && textareaRef.current) {
+      ghostRef.current.scrollTop = textareaRef.current.scrollTop
+    }
   }
+
   const handleOnReset = () => {
-    started.current = false;
-    finished.current = false;
-    textRef.current = "";
-    setTimeLeft(60);
+    started.current = false
+    finished.current = false
+    textRef.current = ""
+    setTimeLeft(60)
     setText("")
-    toShow.current = false;
-    setDone(false);
+    toShow.current = false
+    setDone(false)
   }
-    
-    
+
+  const handleOnSubmit = () => {
+
+    // {userID, wordsID, wpm, accuracy}
+
+    const data = axios.post("http://localhost:3000", {
+      userID: 1, wpm: 40, wordsID: 78, accuracy: 89
+    });
+
+    console.log(data);
+  }
 
   return (
-    <>
-    {/* <h1 className='text-white'>Check</h1> */}
-  <div className=" bg-neutral-900 flex flex-col items-center justify-center text-neutral-100">
-    <h2 className="mb-4 text-xl">{timeLeft}</h2>
+    <div className="flex flex-col items-center justify-center text-neutral-100">
+      <h2 className="mb-4 text-xl">{timeLeft}</h2>
 
-    <div className="relative w-[400px] h-[160px] font-mono">
-      {/* Ghost layer */}
-      <div className="absolute inset-0 p-3 text-base leading-6 whitespace-pre-wrap break-words pointer-events-none text-neutral-500">
-        <span className="text-transparent">{text}</span>
-        <span>{ghostText.slice(text.length)}</span>
+      <div className="relative w-[400px] h-[160px]">
+        
+        {/* ✅ Ghost */}
+        <textarea
+          ref={ghostRef}
+          value={ghostText}
+          readOnly
+          className="
+            absolute inset-0
+            p-3 w-full h-full
+            resize-none outline-none
+            font-mono text-base
+            leading-[24px]
+            tracking-normal
+            border border-neutral-700 rounded
+            text-neutral-500
+            bg-transparent
+            overflow-hidden
+            pointer-events-none
+          "
+        />
+
+        {/* ✅ Actual */}
+        <textarea
+          ref={textareaRef}
+          value={text}
+          onChange={handleOnChange}
+          onScroll={handleScroll}
+          spellCheck={false}
+          className="
+            absolute inset-0 z-10
+            p-3 w-full h-full
+            bg-transparent
+            resize-none outline-none
+            border border-neutral-700 rounded
+            text-neutral-100
+            font-mono text-base
+            leading-[24px]
+            tracking-normal
+            overflow-auto
+          "
+          style={{
+            lineHeight: "24px",
+          }}
+        />
       </div>
 
-      {/* Actual textarea */}
-      <textarea
-        value={text}
-        onChange={handleOnChange}
-        spellCheck={false}
-        className="
-          absolute inset-0 z-10
-          p-3 w-full h-full
-          bg-transparent
-          resize-none outline-none
-          border border-neutral-700 rounded
-          text-neutral-100
-          text-base leading-6
-        "
-      />
+      {toShow.current && (
+        <div className="mt-4 text-lg">
+          WPM: {wpm.current}
+        </div>
+      )}
+
+      {finished.current && (
+        <div className='flex flex-row gap-5'>
+          <button
+          onClick={handleOnReset}
+          className="cursor-pointer mt-6 h-10 w-30 rounded bg-neutral-700 hover:bg-neutral-600 transition"
+        >
+          Reset
+        </button>
+        <button
+          onClick={() => {}}
+          className="cursor-pointer mt-6 h-10 w-30 rounded bg-neutral-700 hover:bg-neutral-600 transition"
+        >
+          Submit Score
+        </button>
+        </div>
+      )}
     </div>
-
-    {toShow.current && (
-      <div className="mt-4 text-lg">
-        WPM: {wpm.current.toString()}
-      </div>
-    )}
-
-    {finished.current && (
-      <button
-        onClick={handleOnReset}
-        className="cursor-pointer mt-6 px-4 py-2 rounded bg-neutral-700 hover:bg-neutral-600 transition"
-      >
-        Reset
-      </button>
-    )}
-  </div>
-</>
-
-
   )
 }
 

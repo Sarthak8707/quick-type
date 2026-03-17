@@ -9,7 +9,7 @@ const Navbar = () => {
       <div>
       <Link to="/"> Home </Link>
       
-      <Link to="/practice">Practice</Link>
+      <Link to="/practice/easy">Practice</Link>
       <Link to={`user/${id}`}> Me</Link>
       </div>
       <div>

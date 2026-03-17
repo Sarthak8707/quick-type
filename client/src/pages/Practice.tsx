@@ -38,7 +38,7 @@ const Practice = () => {
         onClick = {() => handleClick("advanced")}>Advanced</button>
       </div>
 
-      <div>
+      <div className="mt-10">
         <TypingWindow ghostText = {"random"} />
       </div>
 

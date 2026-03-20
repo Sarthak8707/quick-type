@@ -40,6 +40,7 @@ const Practice = () => {
 
       <div className="mt-10">
         <TypingWindow ghostText = {"random"} />
+        
       </div>
 
 

@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import axios from "axios";
+import { jwtDecode } from 'jwt-decode';
 
 
 type TypingWindowProps = {
@@ -64,12 +65,18 @@ const TypingWindow = ({ ghostText }: TypingWindowProps) => {
     setDone(false)
   }
 
-  const handleOnSubmit = () => {
+  const handleOnSubmit = (wpm:number, accuracy: number, wordsID: number) => {
 
     // {userID, wordsID, wpm, accuracy}
+    let userID;
+    const token = localStorage.getItem("token");
+    if(token){
+      const decoded: any = jwtDecode(token);
+       userID = decoded.userID;
+    }
 
-    const data = axios.post("http://localhost:3000", {
-      userID: 1, wpm: 40, wordsID: 78, accuracy: 89
+    const data = axios.post(`http://localhost:3000/sessions/users/`, {
+      userID, wpm, wordsID: 999, accuracy
     });
 
     console.log(data);
@@ -99,7 +106,7 @@ const TypingWindow = ({ ghostText }: TypingWindowProps) => {
             overflow-hidden
             pointer-events-none
           "
-        />
+        /> 
 
         {/* ✅ Actual */}
         <textarea
@@ -144,7 +151,7 @@ const TypingWindow = ({ ghostText }: TypingWindowProps) => {
           onClick={() => {}}
           className="cursor-pointer mt-6 h-10 w-30 rounded bg-neutral-700 hover:bg-neutral-600 transition"
         >
-          Submit Score
+          Save Score
         </button>
         </div>
       )}

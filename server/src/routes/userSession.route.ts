@@ -6,6 +6,6 @@ const router = Router();
 
 router.get("/users/:id", getUserSessionsController);
 
-router.post("/users/:id", authMiddleware, createUserSessionController);
+router.post("/users/", authMiddleware, createUserSessionController);
 
 export { router as userSessionRouter}

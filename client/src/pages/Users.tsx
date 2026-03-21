@@ -1,9 +1,35 @@
 
 import { useParams } from 'react-router-dom'
-import Sessions from '../components/Sessions';
+
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
+type UserData = {
+  id: number,
+  wordsID: number,
+  wpm: number,
+  accuracy: number,
+  userID: number
+}
 
 const Users = () => {
   const {id} = useParams();
+  const [userData, setUserData] = useState<UserData[]>([]);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const response = await axios.get(`http://localhost:3000/sessions/users/${id}`);
+      
+      setUserData(response.data);
+     
+      console.log(response.data);
+    }
+
+    getUserData();
+
+  }, [id])
+
+  
   
   return (
     <div className='bg-neutral-900 min-h-screen text-center'>
@@ -21,7 +47,13 @@ const Users = () => {
         
         <div>
           <h1 className='text-2xl font-medium text-amber-50 text-center mt-16'>Recent Performances</h1>
-          <Sessions />
+          <div className='text-xl text-amber-50'>
+            {userData.map((obj) => (
+              <div key={obj.id}> 
+               wpm: {obj.wpm} {""} accuracy: {obj.accuracy}
+              </div>
+            ))}
+          </div>
         </div>
         
     </div>

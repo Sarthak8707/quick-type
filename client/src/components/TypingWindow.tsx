@@ -68,15 +68,16 @@ const TypingWindow = ({ ghostText }: TypingWindowProps) => {
   const handleOnSubmit = (wpm:number, accuracy: number, wordsID: number) => {
 
     // {userID, wordsID, wpm, accuracy}
-    let userID;
+    
     const token = localStorage.getItem("token");
     if(token){
       const decoded: any = jwtDecode(token);
-       userID = decoded.userID;
     }
 
-    const data = axios.post(`http://localhost:3000/sessions/users/`, {
-      userID, wpm, wordsID: 999, accuracy
+    const data = axios.post(`http://localhost:3000/sessions/users`, {
+       wpm, wordsID: 999, accuracy
+    }, {
+      headers: { Authorization: `Bearer ${token}` }
     });
 
     console.log(data);
@@ -88,7 +89,7 @@ const TypingWindow = ({ ghostText }: TypingWindowProps) => {
 
       <div className="relative w-[400px] h-[160px]">
         
-        {/* ✅ Ghost */}
+        {/* Ghost */}
         <textarea
           ref={ghostRef}
           value={ghostText}
@@ -108,7 +109,7 @@ const TypingWindow = ({ ghostText }: TypingWindowProps) => {
           "
         /> 
 
-        {/* ✅ Actual */}
+        {/* Actual */}
         <textarea
           ref={textareaRef}
           value={text}

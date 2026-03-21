@@ -47,12 +47,17 @@ const Users = () => {
         
         <div>
           <h1 className='text-2xl font-medium text-amber-50 text-center mt-16'>Recent Performances</h1>
-          <div className='text-xl text-amber-50'>
-            {userData.map((obj) => (
-              <div key={obj.id}> 
-               wpm: {obj.wpm} {""} accuracy: {obj.accuracy}
+          <div className='text-xl text-amber-50 mt-20'>
+            <div className='grid grid-cols-3 text-center font-semibold mb-6'> <div>WPM</div> <div>Accuracy</div> <div>Difficulty</div> </div>
+            <div>
+              {userData.map((obj) => (
+              <div key={obj.id} className='grid grid-cols-3 text-center'> 
+                <div> {obj.wpm} </div>
+                <div> {obj.accuracy} </div>
+                <div> Medium </div>
               </div>
             ))}
+            </div>
           </div>
         </div>
         

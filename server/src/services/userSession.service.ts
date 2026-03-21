@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "../db/client";
-import { sessions } from "../db/schema";
+import { sessions, words } from "../db/schema";
 import { CreateUserSessionInput, GetUserSessionInput } from "./types"
  
 
@@ -14,7 +14,14 @@ export const createUserSessionService = async (sessionData: CreateUserSessionInp
 
 export const getUserSessionService = async ({userID}: GetUserSessionInput) => {
 
-    const userSessions = await db.select().from(sessions).where(eq(sessions.userID, userID));
+    const userSessions = await db.select({id: sessions.id, 
+        wpm: sessions.id,
+        accuracy: sessions.accuracy,
+        difficulty: words.difficulty
+    })
+    .from(sessions)
+    .innerJoin(words, eq(sessions.wordsID, words.id))
+    .where(eq(sessions.userID, userID));
     return userSessions;
 
 }

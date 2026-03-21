@@ -10,6 +10,7 @@ type UserData = {
   wpm: number,
   accuracy: number,
   userID: number
+  difficulty: string
 }
 
 const Users = () => {
@@ -54,7 +55,7 @@ const Users = () => {
               <div key={obj.id} className='grid grid-cols-3 text-center'> 
                 <div> {obj.wpm} </div>
                 <div> {obj.accuracy} </div>
-                <div> Medium </div>
+                <div> {obj.difficulty.charAt(0).toUpperCase() + obj.difficulty.slice(1)} </div>
               </div>
             ))}
             </div>

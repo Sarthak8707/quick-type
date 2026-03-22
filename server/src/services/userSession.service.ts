@@ -15,7 +15,7 @@ export const createUserSessionService = async (sessionData: CreateUserSessionInp
 export const getUserSessionService = async ({userID}: GetUserSessionInput) => {
 
     const userSessions = await db.select({id: sessions.id, 
-        wpm: sessions.id,
+        wpm: sessions.wpm,
         accuracy: sessions.accuracy,
         difficulty: words.difficulty
     })

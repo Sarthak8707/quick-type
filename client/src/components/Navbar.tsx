@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom"
-
+import Cookies from "js-cookie";
 
 const Navbar = () => {
   // get id from cookie or local storage
-  const id = 78;
+  const id = Cookies.get("userID");
+  
   return (
     <div className="text-black h-10 bg-amber-100 px-8 flex flex-row justify-between items-center">
       <div>

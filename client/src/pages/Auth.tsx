@@ -49,7 +49,9 @@ const Login = ({ showRegisterPage }: obj) => {
     console.log(res.data);
     setError(false);
     const token = res.data.token;
+    const userID = res.data.userID;
     Cookies.set("token", token);
+    Cookies.set("userID", userID);
    
     }
 

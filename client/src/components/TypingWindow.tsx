@@ -4,10 +4,11 @@ import Cookies from 'js-cookie';
 
 
 type TypingWindowProps = {
-  ghostText: string
+  ghostText: string, 
+  wordsID: number
 }
 
-const TypingWindow = ({ ghostText }: TypingWindowProps) => {
+const TypingWindow = ({ ghostText, wordsID }: TypingWindowProps) => {
   const [text, setText] = useState("")
   const started = useRef(false)
   const finished = useRef(false)
@@ -70,10 +71,8 @@ const TypingWindow = ({ ghostText }: TypingWindowProps) => {
     // {userID, wordsID, wpm, accuracy}
     
     const token = Cookies.get("token");
-   
-
     const response = await axios.post(`http://localhost:3000/sessions/users`, {
-       wpm, wordsID: 2, accuracy: 100
+       wpm, wordsID, accuracy: 100
     }, {
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -146,7 +145,7 @@ const TypingWindow = ({ ghostText }: TypingWindowProps) => {
           Reset
         </button>
         <button
-          onClick={() => {handleOnSubmit(wpm.current, 100, 2)}}
+          onClick={() => {handleOnSubmit(wpm.current, 100, wordsID)}}
           className="cursor-pointer mt-6 h-10 w-30 rounded bg-neutral-700 hover:bg-neutral-600 transition"
         >
           Save Score

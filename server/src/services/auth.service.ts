@@ -22,7 +22,7 @@ export const loginService = async ({username, password}: GetUserInput) => {
     const id = user.id
     //const name = user.username;
     const token = signToken({id, username});
-    return {token, user: username}
+    return {token, username, userID: id}
 
 }
 

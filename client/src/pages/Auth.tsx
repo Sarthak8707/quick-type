@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useState } from 'react'
 
 type obj = {
@@ -34,12 +35,20 @@ const Login = ({ showRegisterPage }: obj) => {
   // const showRegisterPage = () => {
   //   setShowRegister(true);
   // }
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const response = await axios.post("http://localhost:3000/auth/login", {
+      username, password
+    })
+
+  }
+
   return (
     
       <div className='flex flex-col items-center'>
         {/* Login Page */}
  
-        <form className='flex flex-col gap-5 mt-10'>
+        <form className='flex flex-col gap-5 mt-10' onSubmit={handleLogin}>
 
           <h1 className='text-2xl'>Welcome Back!</h1>
 
@@ -59,6 +68,9 @@ const Login = ({ showRegisterPage }: obj) => {
           onChange={(e)=>{setPassword(e.target.value)}}
           className='border border-black rounded-none px-0.5 ml-1'></input>
           </div>
+          <div className='flex items-center justify-center mt-6'>
+            <button className='cursor-pointer text-amber-50 bg-gray-900 py-1 px-5 rounded-md' type="submit">Login</button>
+          </div>
 
         </form>
         <h2 className='mt-5'> Don't have an account?  {""}
@@ -76,11 +88,19 @@ const Register = ({showLoginPage}: obj2) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const onRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const response = await axios.post("http://localhost:3000/auth/register", {
+      username, password
+    })
+
+  }
+
   return (
     <div className='flex flex-col items-center'>
-        {/* Login Page */}
+        {/* Register Page */}
  
-        <form className='flex flex-col gap-5 mt-10'>
+        <form className='flex flex-col gap-5 mt-10' onSubmit={onRegister}>
 
           <h1 className='text-2xl'>Create a new Account</h1>
 
@@ -99,6 +119,10 @@ const Register = ({showLoginPage}: obj2) => {
           value={password} 
           onChange={(e)=>{setPassword(e.target.value)}}
           className='border border-black rounded-none px-0.5 ml-1'></input>
+          </div>
+
+          <div className='flex items-center justify-center mt-6'>
+            <button className='cursor-pointer text-amber-50 bg-gray-900 py-1 px-5 rounded-md' type="submit">Register</button>
           </div>
 
         </form>

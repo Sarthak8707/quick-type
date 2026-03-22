@@ -75,7 +75,7 @@ const TypingWindow = ({ ghostText }: TypingWindowProps) => {
     }
 
     const data = axios.post(`http://localhost:3000/sessions/users`, {
-       wpm, wordsID: 999, accuracy
+       wpm, wordsID: 2, accuracy
     }, {
       headers: { Authorization: `Bearer ${token}` }
     });

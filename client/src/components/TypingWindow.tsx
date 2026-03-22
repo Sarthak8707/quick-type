@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import axios from "axios";
-import { jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie';
 
 
 type TypingWindowProps = {
@@ -31,12 +31,12 @@ const TypingWindow = ({ ghostText }: TypingWindowProps) => {
     setTimeout(() => {
       finished.current = true
       toShow.current = true
+      
 
       const countWords = (t: string) =>
         t.trim().length === 0 ? 0 : t.trim().split(/\s+/).length
 
       wpm.current = countWords(textRef.current)
-
       clearInterval(ticking)
       setDone(true)
     }, 60000)
@@ -65,22 +65,19 @@ const TypingWindow = ({ ghostText }: TypingWindowProps) => {
     setDone(false)
   }
 
-  const handleOnSubmit = (wpm:number, accuracy: number, wordsID: number) => {
+  const handleOnSubmit = async (wpm: number, accuracy: number, wordsID: number) => {
 
     // {userID, wordsID, wpm, accuracy}
     
-    const token = localStorage.getItem("token");
-    if(token){
-      const decoded: any = jwtDecode(token);
-    }
+    const token = Cookies.get("token");
+   
 
-    const data = axios.post(`http://localhost:3000/sessions/users`, {
-       wpm, wordsID: 2, accuracy
+    const response = await axios.post(`http://localhost:3000/sessions/users`, {
+       wpm, wordsID: 2, accuracy: 100
     }, {
       headers: { Authorization: `Bearer ${token}` }
     });
 
-    console.log(data);
   }
 
   return (
@@ -149,7 +146,7 @@ const TypingWindow = ({ ghostText }: TypingWindowProps) => {
           Reset
         </button>
         <button
-          onClick={() => {}}
+          onClick={() => {handleOnSubmit(wpm.current, 100, 2)}}
           className="cursor-pointer mt-6 h-10 w-30 rounded bg-neutral-700 hover:bg-neutral-600 transition"
         >
           Save Score

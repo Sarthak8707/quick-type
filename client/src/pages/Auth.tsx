@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useState } from 'react'
+import Cookies from "js-cookie";
 
 type obj = {
   showRegisterPage: VoidFunction
@@ -47,6 +48,9 @@ const Login = ({ showRegisterPage }: obj) => {
     setLoading(false);
     console.log(res.data);
     setError(false);
+    const token = res.data.token;
+    Cookies.set("token", token);
+   
     }
 
     catch(err){

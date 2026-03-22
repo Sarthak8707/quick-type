@@ -31,16 +31,29 @@ export default Auth
 const Login = ({ showRegisterPage }: obj) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   // const [showRegister, setShowRegister] = useState(false);
   // const showRegisterPage = () => {
   //   setShowRegister(true);
   // }
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     e.preventDefault();
-    const response = await axios.post("http://localhost:3000/auth/login", {
+     try{
+     const res =  await axios.post("http://localhost:3000/auth/login", {
       username, password
-    })
+    });
+    setLoading(false);
+    console.log(res.data);
+    setError(false);
+    }
 
+    catch(err){
+      setLoading(false);
+      console.log("Failed");
+      setError(true);     
+    }   
   }
 
   return (
@@ -68,7 +81,10 @@ const Login = ({ showRegisterPage }: obj) => {
           onChange={(e)=>{setPassword(e.target.value)}}
           className='border border-black rounded-none px-0.5 ml-1'></input>
           </div>
-          <div className='flex items-center justify-center mt-6'>
+
+          <div className='flex flex-col items-center justify-center mt-6'>
+            {loading && <div className='text-gray-900 font-mono'> Wait a moment... </div> }
+            {error && <div className='text-red-700 mb-3'> Username or Password Incorrect! </div>}
             <button className='cursor-pointer text-amber-50 bg-gray-900 py-1 px-5 rounded-md' type="submit">Login</button>
           </div>
 
@@ -87,12 +103,20 @@ const Login = ({ showRegisterPage }: obj) => {
 const Register = ({showLoginPage}: obj2) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
 
   const onRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await axios.post("http://localhost:3000/auth/register", {
+    
+    try{
+      const response = await axios.post("http://localhost:3000/auth/register", {
       username, password
     })
+    console.log(response.data)
+    }
+    catch(err){
+      setError(true);
+    }
 
   }
 
@@ -121,7 +145,8 @@ const Register = ({showLoginPage}: obj2) => {
           className='border border-black rounded-none px-0.5 ml-1'></input>
           </div>
 
-          <div className='flex items-center justify-center mt-6'>
+          <div className='flex flex-col items-center justify-center mt-6'>
+            {error && <div className='text-gray-950 mb-3'> Username already exists. Try a different one </div>}
             <button className='cursor-pointer text-amber-50 bg-gray-900 py-1 px-5 rounded-md' type="submit">Register</button>
           </div>
 
